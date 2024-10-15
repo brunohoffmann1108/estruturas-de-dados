@@ -56,29 +56,20 @@ void printa_em_ordem(node *node_printado){
     printa_em_ordem(node_printado->maior);
 }
 
-void busca_elemento(node *node_atual, int valor){
+int busca_elemento(node *node_atual, int valor){
     if(node_atual == NULL){
-        printf("Valor nao esta nesta arvore\n");
-        return;
+        return 0;
     }
     if(node_atual->valor == valor){
-        printf("Valor esta na arvore\n");
-        return;
+        return 1;
     }
     else if(valor < node_atual->valor){
-        if(node_atual->menor == NULL){
-            printf("Valor nao esta nesta arvore\n");
-            return;
-        }
-        busca_elemento(node_atual->menor, valor);
+        return busca_elemento(node_atual->menor, valor);
     }
     else if(valor > node_atual->valor){
-        if(node_atual->maior == NULL){
-            printf("Valor nao esta nesta arvore\n");            
-            return;
-        }
-        busca_elemento(node_atual->maior, valor);
+        return busca_elemento(node_atual->maior, valor);
     }
+    return 0;
 }
 
 int calcula_altura(node *node_atual){
@@ -94,6 +85,28 @@ int calcula_altura(node *node_atual){
      else{
         return altura_direita + 1;
      }
+}
+
+int *substitui_maior_menor(node **node_atual){
+    if(node_atual == NULL){
+
+    }
+}
+
+int remove_node(int valor, node *node_atual){
+    if(node_atual == NULL){
+        return 0;
+    }
+    if(node_atual->valor == valor){
+        substitui_maior_menor(&node_atual->menor);
+    }
+    else if(valor < node_atual->valor){
+        return remove_node(valor, node_atual->menor);
+    }
+    else if(valor > node_atual->valor){
+        return remove_node(valor, node_atual->maior);
+    }
+    return 0;
 }
 
 int main(){
@@ -121,7 +134,7 @@ int main(){
                     printf("Insira o valor buscado: ");
                     scanf("%i", &valor);
                     while(getchar() != '\n');
-                    busca_elemento(raiz, valor);
+                    printf("Retorno : %i\n", busca_elemento(raiz, valor));
                 }
                 break;
             }
