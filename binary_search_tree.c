@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int tamanho = 0;
-
 typedef struct node{
     int valor;
     int quantidade;
@@ -34,7 +32,6 @@ node *cria_node(int valor){
 void adiciona_node(node *novo, node **posicao_atual){
     if(*posicao_atual == NULL){
         *posicao_atual = novo;
-        tamanho += 1;
     }
     else if((*posicao_atual)->valor == novo->valor){
         (*posicao_atual)->quantidade += 1;
@@ -87,24 +84,26 @@ int calcula_altura(node *node_atual){
      }
 }
 
-int *substitui_maior_menor(node **node_atual){
-    if(node_atual == NULL){
-
-    }
-}
-
-int remove_node(int valor, node *node_atual){
-    if(node_atual == NULL){
+int remove_node(int valor, node **node_atual){
+    if(*node_atual == NULL){
         return 0;
     }
-    if(node_atual->valor == valor){
-        substitui_maior_menor(&node_atual->menor);
+    if((*node_atual)->valor == valor){
+        if((*node_atual)->menor == NULL && (*node_atual)->maior == NULL){
+            *node_atual = NULL;
+            return 1;
+        }
+        else if((*node_atual)->menor != NULL && (*node_atual)->maior != NULL){
+
+        }
+        else if((*node_atual)->menor)
+
     }
-    else if(valor < node_atual->valor){
-        return remove_node(valor, node_atual->menor);
+    else if(valor < (*node_atual)->valor){
+        return remove_node(valor, &(*node_atual)->menor);
     }
-    else if(valor > node_atual->valor){
-        return remove_node(valor, node_atual->maior);
+    else if(valor > (*node_atual)->valor){
+        return remove_node(valor, &(*node_atual)->maior);
     }
     return 0;
 }
@@ -129,33 +128,31 @@ int main(){
             }
 
             case 2:{
-                if(tamanho > 0){
-                    int valor;
-                    printf("Insira o valor buscado: ");
-                    scanf("%i", &valor);
-                    while(getchar() != '\n');
-                    printf("Retorno : %i\n", busca_elemento(raiz, valor));
-                }
+                int valor;
+                printf("Insira o valor buscado: ");
+                scanf("%i", &valor);
+                while(getchar() != '\n');
+                printf("Retorno : %i\n", busca_elemento(raiz, valor));
                 break;
             }
 
             case 3:{
-                if(tamanho > 0){
-                    printa_em_ordem(raiz);
-                }
+                printa_em_ordem(raiz);
                 break;
             }
 
             case 4:{
-
+                int valor;
+                printf("Insira o valor a ser removido: ");
+                scanf("%i", &valor);
+                while(getchar() != '\n');
+                printf("Retorno: %i\n", remove_node(valor, &raiz));
                 break;
             }
 
             case 5:{
-                if(tamanho > 0){
                     int altura = calcula_altura(raiz);
                     printf("Altura: %i\n", altura);
-                }
                 break;
             }
 
