@@ -84,6 +84,14 @@ int calcula_altura(node *node_atual){
      }
 }
 
+node **encontra_predecessor(node **node_atual){
+    if((*node_atual)->maior == NULL){
+        return node_atual;
+    }
+    encontra_predecessor(&(*node_atual)->maior);
+    return 0;
+}
+
 int remove_node(int valor, node **node_atual){
     if(*node_atual == NULL){
         return 0;
@@ -93,11 +101,20 @@ int remove_node(int valor, node **node_atual){
             *node_atual = NULL;
             return 1;
         }
-        else if((*node_atual)->menor != NULL && (*node_atual)->maior != NULL){
-
+        if((*node_atual)->menor != NULL && (*node_atual)->maior == NULL){
+            *node_atual = (*node_atual)->menor;
+            return 1;
         }
-        else if((*node_atual)->menor)
-
+        if((*node_atual)->maior != NULL && (*node_atual)->menor == NULL){
+            *node_atual = (*node_atual)->maior;
+            return 1;
+        }
+        if((*node_atual)->maior != NULL && (*node_atual)->menor != NULL){
+            node **temp = encontra_predecessor(&(*node_atual)->maior);
+            (*node_atual)->valor = (*temp)->valor;
+            *temp = (*temp)->menor;
+            return 1;
+        }
     }
     else if(valor < (*node_atual)->valor){
         return remove_node(valor, &(*node_atual)->menor);
